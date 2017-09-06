@@ -1,6 +1,6 @@
 package me.moosecanswim.securityforprogrammers;
 
-import me.moosecanswim.securityforprogrammers.Repositories.PersonRepository;
+import me.moosecanswim.securityforprogrammers.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,14 +14,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
-    private SSPersonDetailsService personDetailsService;
+    private SSUserDetailsService userDetailsService;
 
     @Autowired
-    private PersonRepository personRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public UserDetailsService userDetailsServiceBead() throws Exception{
-        return new SSPersonDetailsService(personRepository);
+    public UserDetailsService userDetailsServiceBean() throws Exception{
+        return new SSUserDetailsService(userRepository);
     }
 
     @Override
@@ -46,7 +46,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        System.out.println("into the configure");
         auth
                         .userDetailsService(userDetailsServiceBean());
 //        auth.inMemoryAuthentication()

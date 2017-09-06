@@ -3,25 +3,37 @@ package me.moosecanswim.securityforprogrammers.Model;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-public class Person {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+//@Table(name="User_DATA")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    //@Column(name="email",nullable = false)
     private String email;
+    //@Column(name="password")
     private String password;
+    //@Column(name="first_name")
     private String firstName;
+    //@Column(name="last_name")
     private String lastName;
+    //@Column(name="emabled")
     private boolean enabled;
+    //@Column(name="username")
     private String username;
-
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(joinColumns = @JoinColumn(name="person_id"), inverseJoinColumns = @JoinColumn(name="role_id"))
-    private Collection<Role> roles;
+    //@JoinTable(joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="role_id"))
+    @JoinColumn(name="userId")
+    private Set<Role> roles;
 
 
-
+    public User(){
+        setRoles(new HashSet<Role>());
+    }
 
     public long getId() {
         return id;
@@ -71,16 +83,8 @@ public class Person {
         this.username = username;
     }
 
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
-    }
-
     public void addRoles(Role r){
-        System.out.println("the role i am adding to a person is "+r.toString());
+        System.out.println("the role i am adding to a user is "+r.toString());
         this.roles.add(r);
     }
 
@@ -91,5 +95,27 @@ public class Person {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", enabled=" + enabled +
+                ", username='" + username + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

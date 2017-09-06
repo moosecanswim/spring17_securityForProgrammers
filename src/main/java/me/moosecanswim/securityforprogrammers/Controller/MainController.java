@@ -1,9 +1,10 @@
 package me.moosecanswim.securityforprogrammers.Controller;
 
-import me.moosecanswim.securityforprogrammers.Model.Person;
+import me.moosecanswim.securityforprogrammers.Model.User;
 import me.moosecanswim.securityforprogrammers.Model.Role;
-import me.moosecanswim.securityforprogrammers.Repositories.PersonRepository;
+import me.moosecanswim.securityforprogrammers.Repositories.UserRepository;
 import me.moosecanswim.securityforprogrammers.Repositories.RoleRepository;
+import me.moosecanswim.securityforprogrammers.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,67 +17,13 @@ public class MainController {
     @Autowired
     RoleRepository roleRepository;
     @Autowired
-    PersonRepository personRepository;
+    UserRepository userRepository;
 
     @RequestMapping("/")
     public String index(){
 
         if(roleRepository.count()<1) {
-
-            Person person1 = new Person();
-            person1.setId(1);
-            person1.setEmail("jim@jim.com");
-            person1.setEnabled(true);
-            person1.setFirstName("Jim");
-            person1.setLastName("Jimmerson");
-            person1.setPassword("password");
-            person1.setUsername("jim");
-
-            Person person2 = new Person();
-            person2.setId(2);
-            person2.setEmail("bob@bob.com");
-            person2.setEnabled(true);
-            person2.setFirstName("Bob");
-            person2.setLastName("Bobberson");
-            person2.setPassword("password");
-            person2.setUsername("bob");
-
-            Person person3 = new Person();
-            person3.setId(3);
-            person3.setEmail("admin@admin.com");
-            person3.setEnabled(true);
-            person3.setFirstName("Admin");
-            person3.setLastName("User");
-            person3.setPassword("password");
-            person3.setUsername("admin");
-
-            personRepository.save(person1);
-            personRepository.save(person2);
-            personRepository.save(person3);
-
-            Role role1 = new Role();
-            role1.setId(1);
-            role1.setRole("USER");
-
-            Role role2 = new Role();
-            role2.setId(2);
-            role2.setRole("ADMIN");
-
-            roleRepository.save(role1);
-            roleRepository.save(role2);
-
-            System.out.println("role 1 is" + role1.toString());
-            System.out.println("role 2 is " + role2.toString());
-            person1.addRoles(role1);
-            person2.addRoles(role1);
-            person3.addRoles(role1);
-            person3.addRoles(role2);
-
-
-            personRepository.save(person1);
-            personRepository.save(person2);
-            personRepository.save(person3);
-
+            addDefaults();
         }
 
         return "index";
@@ -92,5 +39,61 @@ public class MainController {
     @RequestMapping("/secure")
     public String secure(){
         return "secure";
+    }
+
+    public void addDefaults(){
+        User user1 = new User();
+        user1.setId(1);
+        user1.setEmail("jim@jim.com");
+        user1.setEnabled(true);
+        user1.setFirstName("Jim");
+        user1.setLastName("Jimmerson");
+        user1.setPassword("password");
+        user1.setUsername("jim");
+
+        User user2 = new User();
+        user2.setId(2);
+        user2.setEmail("bob@bob.com");
+        user2.setEnabled(true);
+        user2.setFirstName("Bob");
+        user2.setLastName("Bobberson");
+        user2.setPassword("password");
+        user2.setUsername("bob");
+
+        User user3 = new User();
+        user3.setId(3);
+        user3.setEmail("admin@admin.com");
+        user3.setEnabled(true);
+        user3.setFirstName("Admin");
+        user3.setLastName("User");
+        user3.setPassword("password");
+        user3.setUsername("admin");
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+        userRepository.save(user3);
+
+        Role role1 = new Role();
+        role1.setId(1);
+        role1.setRole("USER");
+
+        Role role2 = new Role();
+        role2.setId(2);
+        role2.setRole("ADMIN");
+
+        roleRepository.save(role1);
+        roleRepository.save(role2);
+
+        System.out.println("role 1 is" + role1.toString());
+        System.out.println("role 2 is " + role2.toString());
+        user1.addRoles(role1);
+        user2.addRoles(role1);
+        user3.addRoles(role1);
+        user3.addRoles(role2);
+
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+        userRepository.save(user3);
     }
 }
