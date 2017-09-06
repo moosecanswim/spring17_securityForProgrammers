@@ -28,7 +28,7 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     //@JoinTable(joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="role_id"))
     @JoinColumn(name="userId")
-    private Set<Role> roles;
+    private Collection<Role> roles;
 
 
     public User(){
@@ -96,11 +96,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
+    public Collection<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
 

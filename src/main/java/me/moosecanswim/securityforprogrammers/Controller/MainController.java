@@ -4,18 +4,24 @@ import me.moosecanswim.securityforprogrammers.Model.User;
 import me.moosecanswim.securityforprogrammers.Model.Role;
 import me.moosecanswim.securityforprogrammers.Repositories.UserRepository;
 import me.moosecanswim.securityforprogrammers.Repositories.RoleRepository;
-import me.moosecanswim.securityforprogrammers.Repositories.UserRepository;
+import me.moosecanswim.securityforprogrammers.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Collection;
 
 @Controller
 public class MainController {
-
+    @Autowired
+    private UserService userService;
     @Autowired
     RoleRepository roleRepository;
     @Autowired
@@ -66,6 +72,22 @@ public class MainController {
         return "User added";
     }
 
+    @GetMapping("/register")
+    public String showRegistrationPage(Model toSend){
+        toSend.addAttribute("user", new User());
+        return "registration";
+    }
+    @PostMapping("/register")
+    public String processRegistrationPage(@Valid User user, BindingResult result,Model toSend){
+        toSend.addAttribute("user", user);
+        if(result.hasErrors()){
+            return "registration";
+        }else{
+            userService.saveUser(user);
+            toSend.addAttribute("message","User Account Successfully Created");
+        }
+        return "index";
+    }
 
     public void addDefaults(){
         User user1 = new User();
