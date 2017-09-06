@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head lang="en">
     <meta charset="UTF-8"/>
     <title>Title</title>
@@ -7,5 +7,17 @@
 <body>
     <h2>Insecure Page</h2>
     <a href="/secure">Secure Page</a>
+    <div sec:authorize="isAuthenticated()">
+        This content is only shown to authenticated users.
+    </div>
+    <div sec:authorize="hasAuthority('ADMIN')">
+        This content is only shown to administrators
+    </div>
+    <div sec:authorize="hasAuthority('USER')">
+        This content is only shown to users
+    </div>
+
+    <!--Logged user: <span sec:authentication="name">Bob</span>-->
+    <!--Roles: <span sec:authentication="principal.authorities">Principal Authorities not set</span>-->
 </body>
 </html>

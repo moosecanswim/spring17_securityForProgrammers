@@ -8,7 +8,9 @@ import me.moosecanswim.securityforprogrammers.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.security.Principal;
 import java.util.Collection;
 
 @Controller
@@ -29,7 +31,7 @@ public class MainController {
         return "index";
     }
     @RequestMapping("/login")
-    public String login(){
+    public String login(Principal p){
         return "login";
     }
     @RequestMapping("/admin")
@@ -40,6 +42,30 @@ public class MainController {
     public String secure(){
         return "secure";
     }
+    @RequestMapping("/testRoles")
+    public @ResponseBody String showRoles(){
+        Iterable <Role> r = roleRepository.findAll();
+        String x="<h2>ROLE DETAILS</><br/>";
+        for(Role item:r){
+            x+="Role details:"+item.getRole()+" has an ID of " +item.getId() +"<br/>";
+        }
+        Role findR= roleRepository.findByRole("ADMIN");
+        x+=findR.getRole()+" was found with an ID of "+ findR.getId();
+        return x;
+    }
+
+    @RequestMapping("/adduser")
+    public @ResponseBody String addUser(){
+        User u = new User();
+        u.setEmail("someone@somewhere.com");
+        u.setUsername("newuser");
+        u.setPassword("password");
+        u.setEnabled(true);
+        u.addRole(roleRepository.findByRole("ADMIN"));
+        userRepository.save(u);
+        return "User added";
+    }
+
 
     public void addDefaults(){
         User user1 = new User();
@@ -84,12 +110,10 @@ public class MainController {
         roleRepository.save(role1);
         roleRepository.save(role2);
 
-        System.out.println("role 1 is" + role1.toString());
-        System.out.println("role 2 is " + role2.toString());
-        user1.addRoles(role1);
-        user2.addRoles(role1);
-        user3.addRoles(role1);
-        user3.addRoles(role2);
+        user1.addRole(role1);
+        user2.addRole(role1);
+        user3.addRole(role1);
+        user3.addRole(role2);
 
 
         userRepository.save(user1);

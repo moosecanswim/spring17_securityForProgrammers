@@ -1,6 +1,7 @@
 package me.moosecanswim.securityforprogrammers;
 
 import me.moosecanswim.securityforprogrammers.Repositories.UserRepository;
+import me.moosecanswim.securityforprogrammers.Services.SSUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -28,7 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/img/**","/css/**","/").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()

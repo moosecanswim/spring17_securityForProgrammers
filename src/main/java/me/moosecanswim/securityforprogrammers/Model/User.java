@@ -83,8 +83,7 @@ public class User {
         this.username = username;
     }
 
-    public void addRoles(Role r){
-        System.out.println("the role i am adding to a user is "+r.toString());
+    public void addRole(Role r){
         this.roles.add(r);
     }
 
@@ -114,8 +113,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", enabled=" + enabled +
-                ", username='" + username + '\'' +
-                ", roles=" + roles +
+                ", username='" + username +
                 '}';
     }
 }
